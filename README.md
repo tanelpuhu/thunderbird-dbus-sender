@@ -14,6 +14,10 @@ following structure:
 Event can be "new", "read" or "unread". Incase of "read" and "unread", author
 and subject are empty.
 
+
+And why you ask? Because I was having trouble accessing dbus from script that
+ran from cron and by upstart script.
+
 PS. Redis server should run in same machine as Thunderbird (127.0.0.1:6379)
 
 
