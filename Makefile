@@ -1,4 +1,4 @@
 all:
 	cd src; \
-	zip -r ../thunderbird-dbus-sender.xpi ./* 
-	@echo "Done. Install the thunderbird-dbus-sender.xpi file in TB." 
+	zip -r ../thunderbird-redis-sender.xpi ./*
+	@echo "Done. Install the thunderbird-redis-sender.xpi file in TB."

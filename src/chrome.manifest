@@ -1,2 +1,2 @@
-content   dbus-sender                 chrome/content/
-overlay chrome://messenger/content/messenger.xul chrome://dbus-sender/content/dbus-sender.xul
+content   redis-sender                 chrome/content/
+overlay chrome://messenger/content/messenger.xul chrome://redis-sender/content/redis-sender.xul

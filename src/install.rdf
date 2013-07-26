@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>dbus-sender@oelerich.org</em:id>
+    <em:id>redis-sender@lusikas.com</em:id>
     <em:type>2</em:type>
-    <em:name>Thunderbird DBus Signal Emitter</em:name>
+    <em:name>Thunderbird Redis PubSub Publisher</em:name>
     <em:version>0.1</em:version>
     <em:creator>Paul Neulinger</em:creator>
     <em:contributor>Jan Oliver Oelerich</em:contributor>
-    <em:description>Addon that emits DBus Signals on new mails.</em:description>
+    <em:contributor>Tanel Puhu</em:contributor>
+    <em:description>Addon that sends Redis PubSub... messages.</em:description>
     <em:unpack>true</em:unpack>
     <em:targetApplication>
       <Description>

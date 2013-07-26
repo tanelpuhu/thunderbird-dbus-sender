@@ -1,39 +1,71 @@
-## Thunderbird dbus sender
+## Thunderbird redis sender
 
-This thunderbird Addon exmits DBus Signals on certain events. Most of the Code
-is taken from the [gnome-shell-extension-thunderbird-
-integration](https://github.com/tanwald/gnome-shell-extension-thunderbird-
-integration) project by Paul Neulinger. Thank you for the great work!
+This thunderbird Addon publishes events (new/read/unread) into Redis
+"thunderbird-redis-sender" channel. Data itself is in JSON with
+following structure:
+
+    {
+        "id": id,
+        "event": event,
+        "author": author,
+        "subject": subject
+    }
+
+Event can be "new", "read" or "unread". Incase of "read" and "unread", author
+and subject are empty.
+
+PS. Redis server should run in same machine as Thunderbird (127.0.0.1:6379)
+
+
+## Guise who have done all of the heavy lifting:
+
+* [gnome-shell-extension-thunderbird-integration](https://github.com/tanwald/gnome-shell-extension-thunderbird-integration)
+project by Paul Neulinger.
+* [thunderbird-dbus-sender](https://github.com/janoliver/thunderbird-dbus-sender)
+project by Jan Oliver Oelerich
+
 
 # Requirements
 
  * Python2
- * dbus
- * dbus-python
+ * redis-py
+ * redis
  * Thunderbird
 
 # How to install
 
+Install redis server:
+
+    wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz
+    tar xzf redis-2.6.14.tar.gz
+    cd redis-2.6.14
+    make
+
+configure it, make it run at start, etc .... and then install redis-py:
+
+    pip install redis
+
+
 To make the extension, open a terminal and run
 
-    git clone git@github.com:janoliver/thunderbird-dbus-sender.git
-    cd thunderbird-dbus-sender
+    git clone git@github.com:tanelpuhu/thunderbird-redis-sender.git
+    cd thunderbird-redis-sender
     make
 
 Then open Thunderbird, Click `Tools->Addons`, find `install addon from file`
-and choose the `thunderbird-dbus-sender.xpi` file in the project folder.
-Restart thunderbird and start listening to signals.
+and choose the `thunderbird-redis-sender.xpi` file in the project folder.
+Restart thunderbird and voilaa.
 
-# How to listen for signals
+# How to listen for messages
 
-The Busname is `org.mozilla.thunderbird.DBus` and the object path is
-`/org/mozilla/thunderbird/DBus`. The following events are present:
+    from redis import Redis
+    import json
 
- * read (id): The message with the id `id` is marked read.
- * unread (id): The message with the id `id` is marked unread.
- * new (id, author, subject): New message with id `id`, author `author` and
-   subject `subject`
- * deleted (id): Message with the id `id` is deleted.
+    rds = Redis()
+    pubsub = rds.pubsub()
+    pubsub.subscribe('thunderbird-redis-sender')
 
-You can listen for dbus events using the shell command `dbus-monitor`. Check it
-out to test if everything is working fine.
+    for item in pubsub.listen():
+        if item['type'] == 'message':
+            data = json.loads(item['data'])
+            print data
